@@ -1,0 +1,5 @@
+<<<<env texts>>>>
+
+DATABASE=mongodb://localhost/t3ch
+PORT=8000
+JWT_SECRET=7tugyiu3hyd893y478t8790uhuighuig
