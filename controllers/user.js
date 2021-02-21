@@ -1,16 +1,56 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken"); // to generate signed token
+const expressJwt = require("express-jwt"); // for autorization check
+const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 
-exports.signup = (req, res) => {
+exports.signUp = (req, res) => {
   console.log("req.body", req.body);
   const user = new User(req.body);
-  user.save((err, user) => {
-    if (err) {
+  user.save((e, user) => {
+    if (e) {
       return res.status(400).json({
-        err,
+        err: errorHandler(e),
       });
     }
+    user.salt = undefined;
+    user.hashed_password = undefined;
     res.json({
       user,
     });
+  });
+};
+
+exports.signIn = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res.status(400).json({
+        error: "User not found. Please, signup",
+      });
+    } else {
+      if (!user.authenticate(password)) {
+        return res.status(401).json({
+          error: "Email and password doesn't match.",
+        });
+      }
+
+      //generate a signed token with user id and secret
+      const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET);
+      //presist the token as 't' in cookie with expiry date
+      res.cookie("t", token, { expire: new Date() + 9999 });
+      //return response with user and token to frontend client
+      const { _id, name, email, role } = user;
+
+      return res.json({
+        token: token,
+        user: {
+          _id,
+          email,
+          name,
+          role,
+        },
+      });
+    }
   });
 };

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 //https://mongoosejs.com/docs/guide.html
 const userSchema = new mongoose.Schema(
@@ -63,6 +63,10 @@ userSchema.methods = {
     } catch (err) {
       return err;
     }
+  },
+
+  authenticate: function (plainText) {
+    return this.encryptPassword(plainText) === this.hashed_password;
   },
 };
 
