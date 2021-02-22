@@ -6,19 +6,23 @@ const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator"); //express-validator@5.3.1
 require("dotenv").config();
 //import routes
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 
 //app
 const app = express();
 
 //db
-mongoose
-  .connect(process.env.DATABASE, {
+mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB Connected."));
+    useFindAndModify: false,
+    useUnifiedTopology: true
+    }).then(() => {
+        console.log('DB connected');
+    }).catch((err) => {
+        console.log(`Error connecting to the database:\n ${err}`)
+    });
 
 //middlewares
 app.use(morgan("dev"));
@@ -27,6 +31,7 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 //routes middleware
+app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 
 const port = process.env.PORT || 8000;

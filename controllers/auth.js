@@ -1,4 +1,4 @@
-const User = require("../models/auth");
+const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // to generate signed token
 const expressJwt = require("express-jwt"); // for autorization check
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
@@ -62,7 +62,7 @@ exports.signOut = (req, res) => {
 
 exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
-  algorithms: ["RS256"], // added later
+  algorithms: ["HS256"], // added later
   userProperty: "auth",
 });
 
