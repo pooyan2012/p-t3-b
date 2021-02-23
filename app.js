@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator"); //express-validator@5.3.1
 require("dotenv").config();
+
 //import routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");

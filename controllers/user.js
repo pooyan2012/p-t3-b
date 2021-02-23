@@ -10,6 +10,7 @@ exports.userById = (req, res, next, id) => {
       user.hashed_password = undefined;
       user.salt = undefined;
       req.profile = user;
+      
       next();
     }
   });
