@@ -9,6 +9,6 @@ router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   });
 });
 
-router.param("userId", userById);
+router.param("userId", userById); //each time there is a userId in a route userById method run
 
 module.exports = router;
