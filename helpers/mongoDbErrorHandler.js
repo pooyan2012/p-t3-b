@@ -40,5 +40,6 @@ exports.errorHandler = (error) => {
     }
   }
 
+  //this is a error handler method for mongodb
   return message;
 };

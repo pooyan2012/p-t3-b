@@ -73,8 +73,6 @@ exports.isAuth = (req, res, next) => {
   //req.profile && req.auth && req.profile._id == req.auth._id; //auth is from userProperty: "auth" | it must be == instead of ===
   let user = req.auth._id;
 
-  console.log("======> " + req.auth._id);
-
   if (!user) {
     return res.status(403).json({
       error: "Access denied",
