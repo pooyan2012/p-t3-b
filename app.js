@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator"); //express-validator@5.3.1
+const cors = require("cors");
 require("dotenv").config();
 
 //import routes
@@ -14,19 +15,23 @@ const userRoutes = require("./routes/user");
 const app = express();
 
 //db
-mongoose.connect(process.env.DATABASE, {
+mongoose
+  .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
-    }).then(() => {
-        console.log('DB connected');
-    }).catch((err) => {
-        console.log(`Error connecting to the database:\n ${err}`)
-    });
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("DB connected");
+  })
+  .catch((err) => {
+    console.log(`Error connecting to the database:\n ${err}`);
+  });
 
 //middlewares
 app.use(morgan("dev"));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
