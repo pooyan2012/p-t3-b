@@ -2,17 +2,19 @@ const Category = require("../models/category");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 
 exports.findCategoryById = (req, res, next, id) => {
-  Category.findById(id).exec((err, category) => {
-    if (err || !category) {
-      res.status(400).json({
-        error: `Category with ID ${id} not found`,
-      });
-    } else {
-      req.category = category;
-    }
+  Category.findById(id)
+    .populate("categoryParent") // this is the field name in category model | read more: https://mongoosejs.com/docs/populate.html#:~:text=The%20ref%20option%20is%20what,valid%20for%20use%20as%20refs.
+    .exec((err, category) => {
+      if (err || !category) {
+        res.status(400).json({
+          error: `Category with ID ${id} not found`,
+        });
+      } else {
+        req.category = category;
+      }
 
-    next();
-  });
+      next();
+    });
 };
 
 exports.create = (req, res) => {

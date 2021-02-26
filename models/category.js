@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 //https://mongoosejs.com/docs/guide.html
 const categorySchema = new mongoose.Schema(
@@ -11,7 +10,8 @@ const categorySchema = new mongoose.Schema(
       required: true,
       maxlength: 32,
     },
-    parentCategoryId: {
+    categoryParent: {
+      //if this is sub category this feild must be filled
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
     },
