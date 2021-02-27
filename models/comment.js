@@ -1,17 +1,31 @@
 const mongoose = require("mongoose");
 
-//https://mongoosejs.com/docs/guide.html
-const commentSchema = new mongoose.Schema(
+const singleCommentSchema = new mongoose.Schema(
   {
-    name: {
+    commentDesc: {
       type: String,
-      unique: true,
+      maxlength: 600,
       trim: true,
-      required: true,
-      maxlength: 32,
     },
+    post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
+    commenter: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    replyTo: { type: mongoose.Schema.Types.ObjectId, ref: "SingleComment" },
+    tumbUp: { type: number, default: 0 },
+    tumbDown: { type: number, default: 0 },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Comment", commentSchema);
+const SingleComment = mongoose.model("SingleComment", singleCommentSchema);
+
+//https://mongoosejs.com/docs/guide.html
+const currentPostCommentsSchema = new mongoose.Schema(
+  {
+    comments: [singleCommentSchema], //array of objects
+  },
+  { timestamps: true }
+);
+
+const Comment = mongoose.model("Comment", currentPostCommentsSchema);
+
+module.exports = { Comment, SingleComment };

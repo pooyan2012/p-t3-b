@@ -39,17 +39,14 @@ const postSchema = new mongoose.Schema(
     //at the time of before creating this post create like, comment and rate entery and collect their objectId
     like: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Like",
     },
     comment: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Comment",
     },
     rate: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Rate",
     },
     tags: [{
