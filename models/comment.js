@@ -19,13 +19,13 @@ const singleCommentSchema = new mongoose.Schema(
 const SingleComment = mongoose.model("SingleComment", singleCommentSchema);
 
 //https://mongoosejs.com/docs/guide.html
-const currentPostCommentsSchema = new mongoose.Schema(
+const postCommentsSchema = new mongoose.Schema(
   {
     comments: [singleCommentSchema], //array of objects
   },
   { timestamps: true }
 );
 
-const Comment = mongoose.model("Comment", currentPostCommentsSchema);
+const Comment = mongoose.model("Comment", postCommentsSchema);
 
 module.exports = { Comment, SingleComment };
