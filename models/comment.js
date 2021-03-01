@@ -10,8 +10,8 @@ const singleCommentSchema = new mongoose.Schema(
     post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
     commenter: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     replyTo: { type: mongoose.Schema.Types.ObjectId, ref: "SingleComment" },
-    tumbUp: { type: number, default: 0 },
-    tumbDown: { type: number, default: 0 },
+    tumbUp: { type: Number, default: 0 },
+    tumbDown: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
