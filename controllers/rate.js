@@ -1,4 +1,4 @@
-const Rate = require("../models/rate");
+const { SingleRate, Rate } = require("../models/rate");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 
 exports.findRateById = (req, res) => {};
@@ -16,7 +16,12 @@ exports.create = (req, res) => {
   });
 };
 
+exports.createSingleRate = (req, res) => {};
+
 exports.read = (req, res) => {};
+
 exports.update = (req, res) => {};
+
 exports.remove = (req, res) => {};
+
 exports.ratesByUser = (req, res) => {};

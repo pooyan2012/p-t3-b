@@ -1,4 +1,4 @@
-const Comment = require("../models/comment");
+const { Comment, SingleComment } = require("../models/comment");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 
 exports.findCommentById = (req, res) => {};
@@ -16,7 +16,12 @@ exports.create = (req, res) => {
   });
 };
 
+exports.createSingleCM = (req, res) => {};
+
 exports.read = (req, res) => {};
+
 exports.update = (req, res) => {};
+
 exports.remove = (req, res) => {};
+
 exports.commentsByUser = (req, res) => {};

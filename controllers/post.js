@@ -2,6 +2,9 @@ const formidable = require("formidable");
 const _ = require("lodash"); //https://lodash.com
 const Post = require("../models/post");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
+const { create: cmCreate } = require("./comment"); //commente create alias as cmCreate
+const { create: likeCreate } = require("./like"); //like create alias as likeCreate
+const { create: rateCreate } = require("./rate"); //rate create alias as rateCreate
 
 exports.findPostById = (req, res, next, id) => {
   Post.findById(id)
@@ -68,7 +71,6 @@ exports.create = (req, res) => {
         !author ||
         !categories ||
         !mainPicPath ||
-        !tags ||
         !focusKeyphrase ||
         !metaDesc
       ) {

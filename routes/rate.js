@@ -6,6 +6,7 @@ const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 
 const {
   create,
+  createSingleRate,
   read,
   ratesByUser,
   update,
@@ -15,7 +16,13 @@ const {
 
 router.get("/rate/read/:rateId", read);
 router.get("/rate/read/:userId", requireSignin, isAuth, ratesByUser);
-router.post("/rate/create/:userId", requireSignin, isAuth, create);
+router.post("/rate/create/:userId", requireSignin, isAuth, isAdmin, create); // //for creating rate template for a new post
+router.post(
+  "/comment/leaverate/:userId",
+  requireSignin,
+  isAuth,
+  createSingleRate
+); //for leaving comment from user
 router.put("/rate/:rateId/:userId", requireSignin, isAuth, update);
 router.delete("/rate/:rateId/:userId", requireSignin, isAuth, remove);
 
