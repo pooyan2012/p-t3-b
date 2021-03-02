@@ -18,17 +18,17 @@ const postSchema = new mongoose.Schema(
       maxlength: 5000,
     },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       required: true,
       ref: "User",
     },
-    categories: [
+    /*categories: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         required: true,
         ref: "Category",
       },
-    ],
+    ],*/
     mainPicPath: {
       type: String,
       unique: true,
@@ -38,7 +38,7 @@ const postSchema = new mongoose.Schema(
     },
     //at the time of before creating this post create like, comment and rate entery and collect their objectId
     like: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       required: true,
       ref: "Like",
     },

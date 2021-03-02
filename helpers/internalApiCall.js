@@ -17,6 +17,7 @@ exports.apiHandler = async (user, path) => {
   };
 
   const response = await axios(config);
-  const result = await JSON.stringify(response.data._id);
+  console.log("Z**************" + response.data._id);
+  const result = response.data._id;
   return result;
 };

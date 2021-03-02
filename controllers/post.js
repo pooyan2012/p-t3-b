@@ -3,6 +3,7 @@ const _ = require("lodash"); //https://lodash.com
 const Post = require("../models/post");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 const { apiHandler } = require("../helpers/internalApiCall");
+var mongoose = require("mongoose");
 
 exports.findPostById = (req, res, next, id) => {
   Post.findById(id)
@@ -60,7 +61,7 @@ exports.create = (req, res) => {
           console.log(error);
         });*/
       ///////////////
-      let userId = req.profile._id;
+      let userId = "60378b9084cc3dd9e4697fe4"; //req.profile._id
 
       console.log(`111=========> ${userId}+${cmID}+${likeID}+${rateID}`);
       //fields = { ...fields, userId, cmID, likeID, rateID };
@@ -68,7 +69,7 @@ exports.create = (req, res) => {
       let {
         title,
         desc,
-        categories,
+        //categories,
         mainPicPath,
         //tags,
         focusKeyphrase,
@@ -78,12 +79,26 @@ exports.create = (req, res) => {
       let post = new Post({
         title,
         desc,
-        author: userId,
-        categories,
+        author: mongoose.Types.ObjectId(userId),
+        //categories:categories.l,
         mainPicPath,
-        like: likeID,
-        comment: cmID,
-        rate: rateID,
+        like: mongoose.Types.ObjectId(likeID),
+        comment: mongoose.Types.ObjectId(cmID),
+        rate: mongoose.Types.ObjectId(rateID),
+        //tags,
+        focusKeyphrase,
+        metaDesc,
+      });
+
+      console.log({
+        title,
+        desc,
+        author: mongoose.Types.ObjectId(userId),
+        //categories,
+        mainPicPath,
+        like: mongoose.Types.ObjectId(likeID),
+        comment: mongoose.Types.ObjectId(cmID),
+        rate: mongoose.Types.ObjectId(rateID),
         //tags,
         focusKeyphrase,
         metaDesc,
@@ -105,16 +120,19 @@ exports.create = (req, res) => {
           error: "All fields are required",
         });
       }*/
-
-      post.save((err, data) => {
-        if (err) {
-          return res.status(400).json({
-            error: errorHandler(err),
-          });
-        } else {
-          res.json(data);
-        }
-      });
+      try {
+        post.save((err, data) => {
+          if (err) {
+            return res.status(400).json({
+              error: errorHandler(err),
+            });
+          } else {
+            res.json(data);
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
 };
