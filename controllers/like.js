@@ -4,7 +4,7 @@ const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 exports.findLikeById = (req, res) => {};
 
 exports.create = (req, res) => {
-  const like = new Like(req.body); //req.body holds parameters that are sent up from the client as part of a POST request
+  const like = new Like(); //req.body holds parameters that are sent up from the client as part of a POST request
   like.save((err, data) => {
     if (err) {
       return res.status(400).json({
@@ -15,6 +15,8 @@ exports.create = (req, res) => {
     }
   });
 };
+
+exports.likeIt = (req, res) => {};
 
 exports.read = (req, res) => {};
 

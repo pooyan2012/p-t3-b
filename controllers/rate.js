@@ -4,7 +4,7 @@ const { errorHandler } = require("../helpers/mongoDbErrorHandler");
 exports.findRateById = (req, res) => {};
 
 exports.create = (req, res) => {
-  const rate = new Rate(req.body); //req.body holds parameters that are sent up from the client as part of a POST request
+  const rate = new Rate(); //req.body holds parameters that are sent up from the client as part of a POST request
   rate.save((err, data) => {
     if (err) {
       return res.status(400).json({

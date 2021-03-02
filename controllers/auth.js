@@ -44,7 +44,7 @@ exports.signIn = (req, res) => {
       res.cookie("t", token, { expire: new Date() + 9999 });
       //return response with user and token to frontend client
       const { _id, name, email, role } = user;
-
+      
       return res.json({
         token: token,
         user: {
@@ -70,9 +70,9 @@ exports.requireSignin = expressJwt({
 });
 
 exports.isAuth = (req, res, next) => {
-  //req.profile && req.auth && req.profile._id == req.auth._id; //auth is from userProperty: "auth" | it must be == instead of ===
+  //req.profile && req.auth && req.profile._id == req.auth._id; //auth is from userProperty: "auth" from requireSignin() | it must be == instead of ===
   let user = req.auth._id && req.profile._id && req.profile._id == req.auth._id;
-
+  
   if (!user) {
     return res.status(403).json({
       error: "Access denied",

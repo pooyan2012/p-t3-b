@@ -52,12 +52,12 @@ const postSchema = new mongoose.Schema(
       required: true,
       ref: "Rate",
     },
-    tags: [
+    /*tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag",
       },
-    ],
+    ],*/
     //seo: It is the search phrase that your users are most likely to look for
     focusKeyphrase: {
       type: String,

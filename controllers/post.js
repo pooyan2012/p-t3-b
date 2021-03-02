@@ -2,9 +2,7 @@ const formidable = require("formidable");
 const _ = require("lodash"); //https://lodash.com
 const Post = require("../models/post");
 const { errorHandler } = require("../helpers/mongoDbErrorHandler");
-const { create: cmCreate } = require("./comment"); //commente create alias as cmCreate
-const { create: likeCreate } = require("./like"); //like create alias as likeCreate
-const { create: rateCreate } = require("./rate"); //rate create alias as rateCreate
+const { apiHandler } = require("../helpers/internalApiCall");
 
 exports.findPostById = (req, res, next, id) => {
   Post.findById(id)
@@ -30,54 +28,83 @@ exports.create = (req, res) => {
 
   form.keepExtensions = true;
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(400).json({
         error: err,
       });
     } else {
-      //***************************************************** */
-      //we need to create like, comment and rate for this post
-      //we need to extend the fields and add like,comment and rate
-      //***************************************************** */
-      let post = new Post(fields);
+      ///////////////
+      let cmID = await apiHandler(req.profile, "comment/create");
+      let likeID = await apiHandler(req.profile, "like/create");
+      let rateID = await apiHandler(req.profile, "rate/create");
+      /*
+      const data = "";
+      const config = {
+        method: "post",
+        url:
+          "http://localhost:8000/api/comment/create/60378b9084cc3dd9e4697fe4",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDM3OGI5MDg0Y2MzZGQ5ZTQ2OTdmZTQiLCJfcm9sZSI6MSwiaWF0IjoxNjE0MzI3ODc1fQ.s2I6X98orDDsx7XhVYNPRt4vLnEI3CiEAHUU7A8ot1Q",
+        },
+        data: data,
+      };
+
+      await axios(config)
+        .then(function (response) {
+          cmID = JSON.stringify(response.data._id);
+          //return cmID;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });*/
+      ///////////////
+      let userId = req.profile._id;
+
+      console.log(`111=========> ${userId}+${cmID}+${likeID}+${rateID}`);
+      //fields = { ...fields, userId, cmID, likeID, rateID };
+
       let {
         title,
         desc,
-        author,
         categories,
         mainPicPath,
-        tags,
+        //tags,
         focusKeyphrase,
         metaDesc,
       } = fields;
-      let photo = files.photo;
 
-      // validations
-      /* if (photo) {
-        if (files.photo.size > 1000000) {
-          return res.status(400).json({
-            error: "Image should be less than 1mb in size",
-          });
-        }
+      let post = new Post({
+        title,
+        desc,
+        author: userId,
+        categories,
+        mainPicPath,
+        like: likeID,
+        comment: cmID,
+        rate: rateID,
+        //tags,
+        focusKeyphrase,
+        metaDesc,
+      });
 
-        product.photo.data = fs.readFileSync(photo.path);
-        product.photo.contentType = photo.type;
-      }*/
-
-      if (
+      /*if (
         !title ||
         !desc ||
         !author ||
         !categories ||
         !mainPicPath ||
         !focusKeyphrase ||
-        !metaDesc
+        !metaDesc ||
+        !comment ||
+        !like ||
+        !rate
       ) {
         return res.status(400).json({
           error: "All fields are required",
         });
-      }
+      }*/
 
       post.save((err, data) => {
         if (err) {

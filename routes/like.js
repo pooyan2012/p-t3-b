@@ -5,7 +5,7 @@ const { userById } = require("../controllers/user");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 
 const {
-  create,
+  create,likeIt,
   read,
   likesByUser,
   update,
@@ -15,7 +15,8 @@ const {
 
 router.get("/like/read/:likeId", read);
 router.get("/like/read/:userId", requireSignin, isAuth, likesByUser);
-router.post("/like/create/:userId", requireSignin, isAuth, create);
+router.post("/like/create/:userId", requireSignin, isAuth,isAdmin, create);
+router.post("/like/leavelike/:userId", requireSignin, isAuth, likeIt);
 router.put("/like/:likeId/:userId", requireSignin, isAuth, update);
 router.delete("/like/:likeId/:userId", requireSignin, isAuth, remove);
 
