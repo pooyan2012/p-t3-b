@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+
 const { userById } = require("../controllers/user");
+const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 
 const {
   create,
@@ -10,7 +12,6 @@ const {
   remove,
   findCommentById,
 } = require("../controllers/comment");
-const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 
 router.get("/comment/read/:commentId", read);
 router.get("/comment/read/:userId", requireSignin, isAuth, commentsByUser);

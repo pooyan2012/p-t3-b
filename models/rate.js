@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const rateSchema = new mongoose.Schema(
   {
-    rater: { type: mongoose.Scheema.Types.ObjectId, ref: "User" },
+    rater: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     score: { type: Number },
     post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
   },
