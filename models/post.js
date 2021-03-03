@@ -22,16 +22,15 @@ const postSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    /*categories: [
+    categories: [
       {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "Category",
       },
-    ],*/
+    ],
     mainPicPath: {
       type: String,
-      unique: true,
       trim: true,
       required: true,
       maxlength: 5000,

@@ -30,81 +30,64 @@ exports.create = (req, res) => {
   form.keepExtensions = true;
 
   form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
-      });
-    } else {
-      ///////////////
-      let cmID = await apiHandler(req.profile, "comment/create");
-      let likeID = await apiHandler(req.profile, "like/create");
-      let rateID = await apiHandler(req.profile, "rate/create");
-      /*
-      const data = "";
-      const config = {
-        method: "post",
-        url:
-          "http://localhost:8000/api/comment/create/60378b9084cc3dd9e4697fe4",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDM3OGI5MDg0Y2MzZGQ5ZTQ2OTdmZTQiLCJfcm9sZSI6MSwiaWF0IjoxNjE0MzI3ODc1fQ.s2I6X98orDDsx7XhVYNPRt4vLnEI3CiEAHUU7A8ot1Q",
-        },
-        data: data,
-      };
+    try {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      } else {
+        let cmID = await apiHandler(req.profile, "comment/create");
+        let likeID = await apiHandler(req.profile, "like/create");
+        let rateID = await apiHandler(req.profile, "rate/create");
 
-      await axios(config)
-        .then(function (response) {
-          cmID = JSON.stringify(response.data._id);
-          //return cmID;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });*/
-      ///////////////
-      let userId = "60378b9084cc3dd9e4697fe4"; //req.profile._id
+        let userId = new mongoose.Types.ObjectId(req.profile._id);
 
-      console.log(`111=========> ${userId}+${cmID}+${likeID}+${rateID}`);
-      //fields = { ...fields, userId, cmID, likeID, rateID };
+        //console.log(`111=========> ${userId}+${cmID}+${likeID}+${rateID}`);
 
-      let {
-        title,
-        desc,
-        //categories,
-        mainPicPath,
-        //tags,
-        focusKeyphrase,
-        metaDesc,
-      } = fields;
+        let {
+          title,
+          desc,
+          categories,
+          mainPicPath,
+          //tags,
+          focusKeyphrase,
+          metaDesc,
+        } = fields;
 
-      let post = new Post({
-        title,
-        desc,
-        author: mongoose.Types.ObjectId(userId),
-        //categories:categories.l,
-        mainPicPath,
-        like: mongoose.Types.ObjectId(likeID),
-        comment: mongoose.Types.ObjectId(cmID),
-        rate: mongoose.Types.ObjectId(rateID),
-        //tags,
-        focusKeyphrase,
-        metaDesc,
-      });
+        let categoriesArr = categories.split(",");
 
-      console.log({
-        title,
-        desc,
-        author: mongoose.Types.ObjectId(userId),
-        //categories,
-        mainPicPath,
-        like: mongoose.Types.ObjectId(likeID),
-        comment: mongoose.Types.ObjectId(cmID),
-        rate: mongoose.Types.ObjectId(rateID),
-        //tags,
-        focusKeyphrase,
-        metaDesc,
-      });
+        categoriesArr = categoriesArr.map(
+          (el) => new mongoose.Types.ObjectId(el)
+        );
+        let post = new Post({
+          title,
+          desc,
+          author: mongoose.Types.ObjectId(userId),
+          categories: categoriesArr,
+          mainPicPath,
+          like: mongoose.Types.ObjectId(likeID),
+          comment: mongoose.Types.ObjectId(cmID),
+          rate: mongoose.Types.ObjectId(rateID),
+          //tags,
+          focusKeyphrase,
+          metaDesc,
+        });
 
-      /*if (
+        console.log({
+          title,
+          desc,
+          author: mongoose.Types.ObjectId(userId),
+          categories: categoriesArr,
+          mainPicPath,
+          like: mongoose.Types.ObjectId(likeID),
+          comment: mongoose.Types.ObjectId(cmID),
+          rate: mongoose.Types.ObjectId(rateID),
+          //tags,
+          focusKeyphrase,
+          metaDesc,
+        });
+
+        /*if (
         !title ||
         !desc ||
         !author ||
@@ -120,19 +103,22 @@ exports.create = (req, res) => {
           error: "All fields are required",
         });
       }*/
-      try {
-        post.save((err, data) => {
-          if (err) {
-            return res.status(400).json({
-              error: errorHandler(err),
-            });
-          } else {
-            res.json(data);
-          }
-        });
-      } catch (e) {
-        console.log(e);
+        try {
+          post.save((err, data) => {
+            if (err) {
+              return res.status(400).json({
+                error: errorHandler(err),
+              });
+            } else {
+              res.json(data);
+            }
+          });
+        } catch (e) {
+          console.log(e);
+        }
       }
+    } catch (e) {
+      console.log(e);
     }
   });
 };
